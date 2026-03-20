@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 — Seite nicht gefunden | mintoryx</title>
+  <link rel="icon" href="img/mintoryx-fox.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #FAFAFA;
+      --text-1:  #0A0A0A;
+      --text-2:  rgba(10,10,10,0.45);
+      --border:  rgba(10,10,10,0.08);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text-1);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      overflow: hidden;
+    }
+
+    /* ── Animations ─────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideLeft {
+      from { opacity: 0; transform: translateX(-32px) rotate(-5deg); }
+      to   { opacity: 0.7; transform: translateX(0) rotate(0deg); }
+    }
+    @keyframes slideRight {
+      from { opacity: 0; transform: translateX(32px) rotate(5deg); }
+      to   { opacity: 0.7; transform: translateX(0) rotate(0deg); }
+    }
+    @keyframes ghostIn {
+      from { opacity: 0; transform: scale(0.8) translateY(12px) rotate(-5deg); }
+      to   { opacity: 1; transform: scale(1) translateY(0) rotate(0deg); }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(-6px); }
+      50%       { transform: translateY(6px); }
+    }
+    @keyframes ghostWiggle {
+      0%   { transform: translateY(var(--fy)) rotate(0deg); }
+      25%  { transform: translateY(var(--fy)) rotate(-4deg); }
+      75%  { transform: translateY(var(--fy)) rotate(4deg); }
+      100% { transform: translateY(var(--fy)) rotate(0deg); }
+    }
+
+    /* ── Layout ─────────────────────────────────────── */
+    .page {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+
+    /* ── "4 👻 4" row ─────────────────────────────── */
+    .hero-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+      margin-bottom: 36px;
+    }
+
+    .num {
+      font-size: clamp(72px, 14vw, 128px);
+      font-weight: 800;
+      color: var(--text-1);
+      opacity: 0;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      user-select: none;
+    }
+    .num--left  { animation: slideLeft  0.8s cubic-bezier(.43,.13,.23,.96) 0.1s forwards; }
+    .num--right { animation: slideRight 0.8s cubic-bezier(.43,.13,.23,.96) 0.1s forwards; }
+
+    .ghost-wrap {
+      opacity: 0;
+      animation: ghostIn 0.6s cubic-bezier(.43,.13,.23,.96) 0.2s forwards;
+    }
+    .ghost-wrap img {
+      display: block;
+      width: clamp(72px, 12vw, 112px);
+      height: clamp(72px, 12vw, 112px);
+      object-fit: contain;
+      user-select: none;
+      animation: float 2s ease-in-out 0.8s infinite;
+      cursor: default;
+    }
+    .ghost-wrap:hover img {
+      animation: ghostWiggle 2s ease-in-out infinite;
+      --fy: -6px;
+    }
+
+    /* ── Text ───────────────────────────────────────── */
+    .headline {
+      font-size: clamp(1.4rem, 4vw, 2.4rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      opacity: 0;
+      animation: fadeUp 0.6s cubic-bezier(.43,.13,.23,.96) 0.35s forwards;
+      margin-bottom: 12px;
+    }
+
+    .subline {
+      font-size: clamp(0.9rem, 2vw, 1.1rem);
+      color: var(--text-2);
+      font-weight: 400;
+      opacity: 0;
+      animation: fadeUp 0.6s cubic-bezier(.43,.13,.23,.96) 0.45s forwards;
+      margin-bottom: 40px;
+    }
+
+    /* ── Button ─────────────────────────────────────── */
+    .btn-home {
+      display: inline-block;
+      background: var(--text-1);
+      color: #FAFAFA;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      padding: 14px 32px;
+      border-radius: 100px;
+      text-decoration: none;
+      letter-spacing: -0.01em;
+      opacity: 0;
+      animation: fadeUp 0.6s cubic-bezier(.43,.13,.23,.96) 0.55s forwards;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.2s ease;
+      margin-bottom: 28px;
+    }
+    .btn-home:hover {
+      transform: scale(1.04);
+      background: #222;
+      box-shadow: 0 8px 24px rgba(10,10,10,0.18);
+    }
+
+    /* ── "What is 404?" ─────────────────────────────── */
+    .explain-link {
+      position: relative;
+      font-size: 0.85rem;
+      color: var(--text-2);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: inherit;
+      opacity: 0;
+      animation: fadeUp 0.6s cubic-bezier(.43,.13,.23,.96) 0.65s forwards;
+      transition: color 0.2s;
+    }
+    .explain-link:hover { color: var(--text-1); }
+
+    /* Tooltip */
+    .tooltip {
+      position: absolute;
+      bottom: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%) translateY(4px);
+      background: var(--text-1);
+      color: #FAFAFA;
+      font-size: 0.78rem;
+      font-weight: 400;
+      line-height: 1.5;
+      padding: 10px 14px;
+      border-radius: 10px;
+      width: 220px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      white-space: normal;
+    }
+    .tooltip::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 6px solid transparent;
+      border-top-color: var(--text-1);
+    }
+    .explain-link:hover .tooltip,
+    .explain-link:focus .tooltip {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ── Logo ───────────────────────────────────────── */
+    .logo-link {
+      position: fixed;
+      top: 24px;
+      left: 28px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: var(--text-1);
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: -0.02em;
+      opacity: 0;
+      animation: fadeUp 0.5s ease 0s forwards;
+    }
+    .logo-link img { width: 28px; height: 28px; }
+  </style>
+</head>
+<body>
+
+  <a href="index.html" class="logo-link" aria-label="Zurück zu mintoryx">
+    <img src="img/mintoryx-fox.svg" alt="mintoryx Logo" />
+    <span>mintoryx</span>
+  </a>
+
+  <div class="page" role="main">
+
+    <div class="hero-row" aria-label="Fehler 404">
+      <span class="num num--left" aria-hidden="true">4</span>
+
+      <div class="ghost-wrap" aria-hidden="true">
+        <img
+          src="https://xubohuah.github.io/xubohua.top/Group.png"
+          alt=""
+          draggable="false"
+          loading="eager"
+        />
+      </div>
+
+      <span class="num num--right" aria-hidden="true">4</span>
+    </div>
+
+    <h1 class="headline">Boo! Seite nicht gefunden.</h1>
+
+    <p class="subline">
+      Diese Seite ist wohl ein Geist — sie ist nicht mehr da.
+    </p>
+
+    <a href="index.html" class="btn-home">Zurück zur Startseite</a>
+
+    <button class="explain-link" aria-describedby="tooltip-404">
+      Was bedeutet 404?
+      <span class="tooltip" id="tooltip-404" role="tooltip">
+        Ein 404-Fehler bedeutet, dass die angefragte Seite auf dem Server nicht gefunden werden konnte.
+      </span>
+    </button>
+
+  </div>
+
+</body>
+</html>
