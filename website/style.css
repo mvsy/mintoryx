@@ -285,8 +285,9 @@
       background-position: center;
       background-repeat: no-repeat;
       background-size: 170%;
-      clip-path: polygon(25% 25%, 75% 25%, 75% 75%, 25% 75%);
-      will-change: clip-path, background-size, opacity;
+      clip-path: inset(25%);
+      will-change: clip-path, opacity;
+      transform: translateZ(0);
     }
     /* Text overlay: centered, fades out as image expands */
     .scroll-hero__text {
@@ -354,6 +355,7 @@
       border-radius: 16px;
       display: block;
       will-change: transform, opacity;
+      transform: translateZ(0);
       object-fit: cover;
     }
     .pax-img--1 { width: 33%; }

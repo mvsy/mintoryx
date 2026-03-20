@@ -16,16 +16,16 @@
       // Parallax images
       const paxImgs = document.querySelectorAll('.pax-img');
 
+      let trackTop = track.getBoundingClientRect().top + window.scrollY;
+
       function updateHero() {
         const scrollY = window.scrollY;
-        const trackTop = track.getBoundingClientRect().top + scrollY;
-        const relY = scrollY - trackTop; // scroll relative to section start
+        const relY = scrollY - trackTop;
 
-        // ── Clip-path: small box → full screen (over first 1500px) ──
+        // ── Clip-path: inset() is GPU-composited (faster than polygon) ──
         const clipP = Math.max(0, Math.min(1, relY / SECTION_HEIGHT));
-        const c1 = 25 * (1 - clipP);
-        const c2 = 75 + 25 * clipP;
-        bg.style.clipPath = `polygon(${c1}% ${c1}%, ${c2}% ${c1}%, ${c2}% ${c2}%, ${c1}% ${c2}%)`;
+        const inset = 25 * (1 - clipP);
+        bg.style.clipPath = `inset(${inset}%)`;
 
         // ── Background size: 170% → 100% ──
         const bgP = Math.max(0, Math.min(1, relY / (SECTION_HEIGHT + 500)));
@@ -45,7 +45,6 @@
           const start = parseFloat(img.dataset.start || 0);
           const end   = parseFloat(img.dataset.end   || 0);
           const rect  = img.getBoundingClientRect();
-          // 0 when bottom enters viewport, 1 when top exits
           const t = Math.max(0, Math.min(1, (vh - rect.top) / (vh + rect.height)));
           const y = start + (end - start) * t;
           const fade = t > 0.75 ? (t - 0.75) / 0.25 : 0;
@@ -54,13 +53,23 @@
         });
       }
 
+      // rAF throttle: only run once per frame regardless of scroll frequency
+      let rafPending = false;
       function onScroll() {
-        updateHero();
-        updateParallax();
+        if (rafPending) return;
+        rafPending = true;
+        requestAnimationFrame(() => {
+          updateHero();
+          updateParallax();
+          rafPending = false;
+        });
       }
 
       window.addEventListener('scroll', onScroll, { passive: true });
-      window.addEventListener('resize', onScroll, { passive: true });
+      window.addEventListener('resize', () => {
+        trackTop = track.getBoundingClientRect().top + window.scrollY;
+        onScroll();
+      }, { passive: true });
       onScroll();
     })();
 
